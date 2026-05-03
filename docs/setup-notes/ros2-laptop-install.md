@@ -5,9 +5,9 @@ Ubuntu version: 22.04.5 LTS
 Hostname: developer-laptop
 
 ## Verified working
-- Talker/listener test passed.
-- ROS_DISTRO confirmed as humble.
-- source /opt/ros/humble/setup.bash is active.
+- Ran `source /opt/ros/humble/setup.bash` in the shell used for verification.
+- Ran `echo $ROS_DISTRO`; output was `humble`.
+- Ran `ros2 run demo_nodes_cpp talker` in one terminal and `ros2 run demo_nodes_py listener` in another; listener output included `I heard: [Hello World: ...]`.
 
 ## Issues encountered
 - Resolved initial apt configuration conflicts.
