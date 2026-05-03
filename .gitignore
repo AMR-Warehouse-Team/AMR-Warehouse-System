@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# ROS2
+build/
+install/
+log/
+*.bag
+
+# PlatformIO
+.pio/
+.vscode/
+firmware/.pio/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Large files (use Google Drive instead)
+*.zip
+*.tar.gz
+*.iso
+*.mp4
+
+# Secrets
+*.key
+*.pem
+config/secrets.yaml
