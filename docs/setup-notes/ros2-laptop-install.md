@@ -1,8 +1,8 @@
-# ROS2 Humble — Laptop Install (Nathalie)
+# ROS2 Humble — Laptop Install (Developer Laptop)
 
 Installed on: May 3, 2026
 Ubuntu version: 22.04.5 LTS
-Hostname: nathalie-Latitude-E6430
+Hostname: developer-laptop
 
 ## Verified working
 - Talker/listener test passed.
