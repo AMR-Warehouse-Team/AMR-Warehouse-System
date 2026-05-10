@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- =====================================================================
+       Gazebo colours
+       Each <gazebo reference="X"> overrides the visual material for Gazebo.
+       ===================================================================== -->
+  <gazebo reference="base_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference="left_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="right_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="lift_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="camera_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <!-- =====================================================================
+       Frictionless passive casters
+       mu1 / mu2 = 0.0 prevents the robot body from pitching or jumping
+       when the caster spheres contact the ground plane.
+       ===================================================================== -->
+  <gazebo reference="front_left_caster_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="front_right_caster_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="rear_left_caster_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="rear_right_caster_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <!-- =====================================================================
+       Differential drive plugin
+       Subscribes to /cmd_vel, publishes /odom and /tf (odom → base_footprint).
+       Wheel separation and diameter must match CLAUDE.md locked values.
+       ===================================================================== -->
+  <gazebo>
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+      <ros>
+        <remapping>/tf:=tf</remapping>
+      </ros>
+
+      <update_rate>50</update_rate>
+
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+
+      <!-- LOCKED — from CLAUDE.md -->
+      <wheel_separation>0.550</wheel_separation>
+      <wheel_diameter>0.130</wheel_diameter>
+
+      <max_wheel_torque>200</max_wheel_torque>
+      <max_wheel_acceleration>10.0</max_wheel_acceleration>
+
+      <command_topic>cmd_vel</command_topic>
+
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <publish_wheel_tf>false</publish_wheel_tf>
+
+      <odometry_topic>odom</odometry_topic>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+
+    </plugin>
+  </gazebo>
+
+</robot>
