@@ -21,7 +21,7 @@
     <material>Gazebo/Grey</material>
   </gazebo>
 
-  <gazebo reference="lidar_link">
+  <gazebo reference="laser">
     <material>Gazebo/Blue</material>
   </gazebo>
 

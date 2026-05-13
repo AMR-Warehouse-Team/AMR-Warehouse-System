@@ -220,7 +220,7 @@
        Sits on top of the chassis, forward of centre.
        Joint Z = base_height/2 + lidar_height/2 → cylinder bottom flush with chassis top.
        ===================================================================== -->
-  <link name="lidar_link">
+  <link name="laser">
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -246,7 +246,7 @@
 
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
-    <child  link="lidar_link"/>
+    <child  link="laser"/>
     <origin xyz="0.25 0 ${base_height / 2.0 + lidar_height / 2.0}" rpy="0 0 0"/>
   </joint>
 
