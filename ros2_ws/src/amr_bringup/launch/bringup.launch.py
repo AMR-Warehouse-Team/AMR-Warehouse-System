@@ -16,8 +16,9 @@ def generate_launch_description():
     robot_description = ParameterValue(Command(['xacro ', xacro_file]), value_type=str)
 
     # ── Robot State Publisher ───────────────────────────────────────────────
-    # Publishes /robot_description and all static TF transforms from the URDF
-    # (base_footprint → base_link → laser, camera_link, etc.)
+    # Reads the URDF, publishes /robot_description, and broadcasts all fixed
+    # TF transforms declared in the URDF (base_footprint → base_link →
+    # laser_frame, camera_link, lift_link, wheel links, caster links).
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -25,25 +26,31 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_description}],
     )
 
-    # ── RPLIDAR C1 ──────────────────────────────────────────────────────────
-    # frame_id overridden to 'laser' so /scan messages match the URDF TF
-    # tree without needing an extra static_transform_publisher.
-    #
-    # Alternative (if you cannot set frame_id here): add a
-    # static_transform_publisher node bridging the frames with a zero transform:
-    #   Node(package='tf2_ros', executable='static_transform_publisher',
-    #        arguments=['0','0','0','0','0','0','laser','laser'])
+    # ── Joint State Publisher GUI ───────────────────────────────────────────
+    # Provides sliders for all non-fixed joints (drive wheels, lift_joint).
+    # Publishes /joint_states so robot_state_publisher can broadcast their TF.
+    joint_state_publisher_gui = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        output='screen',
+    )
+
+    # ── SLLIDAR C1 ──────────────────────────────────────────────────────────
+    # frame_id must match the URDF link name 'laser_frame' so /scan messages
+    # land in the correct TF frame without a separate static_transform_publisher.
     sllidar = Node(
         package='sllidar_ros2',
         executable='sllidar_node',
         name='sllidar_node',
         output='screen',
         parameters=[{
+            'channel_type':     'serial',
             'serial_port':      '/dev/ttyUSB0',
-            'serial_baudrate':  460800,          # RPLIDAR C1 baud rate
-            'frame_id':         'laser',    # ← matches URDF link name
+            'serial_baudrate':  460800,
+            'frame_id':         'laser_frame',
             'inverted':         False,
             'angle_compensate': True,
+            'scan_mode':        'Standard',
         }],
     )
 
@@ -57,6 +64,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_state_publisher,
+        joint_state_publisher_gui,
         sllidar,
         rviz2,
     ])
